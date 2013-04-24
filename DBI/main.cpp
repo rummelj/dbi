@@ -8,13 +8,15 @@
 #include <cstdlib>
 #include <cstdint>
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <fcntl.h>
 #include <unistd.h>
 #include <new> 
 
-#include "inputBuffer.h"
+#include "inputBuffer.hpp"
+#include "outputBuffer.hpp"
 
 using namespace std;
 
@@ -33,23 +35,46 @@ struct sort_t {
  * @param memSize
  */
 void externalSort( int fdInput, uint64_t size, int fdOutput, uint64_t memSize ) {
-    inputBuffer inBuf(fdInput, memSize);
+    inputBuffer<uint64_t> inBuf(fdInput, memSize);
     
     uint64_t* chunk_ptr;
-    size_t readBytes;
+    size_t readElements;
     
-    while( (readBytes = inBuf.getNextChunk(chunk_ptr)) > 0) {
-        std::cout << "read: " << readBytes << std::endl;
-        std::vector<uint64_t> data(chunk_ptr, chunk_ptr + readBytes);
+    //uint64_t numRuns = memSize / size;
+    uint64_t runNumber = 0;
+    
+    //do sth when numRuns > memSize
+   
+    while( (readElements = inBuf.getNextChunk(chunk_ptr)) > 0) {
+        std::cout << "read: " << readElements << std::endl;
+        std::vector<uint64_t> data(chunk_ptr, chunk_ptr + readElements);
         
         std::sort(data.begin(), data.end());
+        
+        
         
         for( uint64_t& v : data ) {
             std::cout << v << std::endl;
         }
         
+        std::stringstream sstream("run");
+        sstream << runNumber;
+        
+        const std::string runFilename( sstream.str() );
+        
+        int fd = open( runFilename.c_str(), O_WRONLY | O_CREAT, S_IROTH | S_IRGRP | S_IWUSR | S_IRUSR );
+        
+        outputBuffer<uint64_t> outBuf( fd, memSize );
+        
+        outBuf.writeChunk( &data[0], readElements );
+        outBuf.flush();
+        
+        close(fd);
+        
+        runNumber ++;
+        
         //write data to temp-file
-        //memorize which run is in which file & maximum count of files
+        //memorize maximum count of files
         
     }
     
