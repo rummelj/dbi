@@ -4,8 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>inputBuffer.h</itemPath>
-      <itemPath>outputBuffer.h</itemPath>
+      <itemPath>extSort/inputBuffer.h</itemPath>
+      <itemPath>extSort/outputBuffer.h</itemPath>
+      <itemPath>extSort/externalSorter.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -14,9 +15,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>inputBuffer.cpp</itemPath>
+      <itemPath>extSort/inputBuffer.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
-      <itemPath>outputBuffer.cpp</itemPath>
+      <itemPath>extSort/outputBuffer.cpp</itemPath>
+      <itemPath>extSort/externalSorter.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -45,13 +47,17 @@
           <standard>8</standard>
         </ccTool>
       </compileType>
-      <item path="inputBuffer.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/inputBuffer.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="inputBuffer.h" ex="false" tool="3" flavor2="0">
+      <item path="extSort/inputBuffer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="extSort/outputBuffer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="extSort/externalSorter.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="extSort/externalSorter.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="outputBuffer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="outputBuffer.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -77,15 +83,19 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="inputBuffer.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/inputBuffer.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="inputBuffer.h" ex="false" tool="3" flavor2="0">
+      <item path="extSort/inputBuffer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="extSort/outputBuffer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="outputBuffer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="outputBuffer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="extSort/externalSorter.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="extSort/externalSorter.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -9,6 +9,7 @@
 #define	INPUTBUFFER_H
 
 #include <cstdint>
+#include <stdio.h>
 
 class inputBuffer {
 public:
