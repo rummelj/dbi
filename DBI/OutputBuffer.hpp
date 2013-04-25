@@ -17,10 +17,10 @@
 #include <cstdio>
 #include <cstdint>
 #include <cstdlib>
-//#include <cstring>
+#include <cstring>
 
 template<typename T>
-class outputBuffer {
+class OutputBuffer {
 public:
     
     /**
@@ -29,15 +29,15 @@ public:
      * @param fd
      * @param bufferSize
      */
-    outputBuffer( int fd, uint64_t bufferSize );
-    virtual ~outputBuffer();
+    OutputBuffer( int fd, uint64_t bufferSize );
+    virtual ~OutputBuffer();
 private:
 
     const size_t DATA_SIZE = sizeof (T);
     
     int _fd;
     
-    T* _buffer;
+    char* _buffer;
     uint64_t _pos;
     
     uint64_t _bufferSize;
@@ -60,7 +60,7 @@ public:
      * @param offset the offset in the buffer (defaults to 0)
      * @return the number of bytes written
      */
-    size_t writeChunk( T* buffer, uint64_t len, uint64_t offset = 0 );
+    void writeChunk( T* buffer, uint64_t len, uint64_t offset = 0 );
 
     /**
      * Writes a single element to the output buffer
@@ -68,38 +68,40 @@ public:
      * @param element
      * @return 
      */
-    size_t writeElement( T element );
+    void writeElement( T element );
     
     /**
      * Writes the remaining elements in the buffer (from 0 to cur) to the output file
      */
     void flush();
     
+    int getFd();
+    
 };
 
 template<typename T>
-outputBuffer<T>::outputBuffer( int fd, uint64_t bufferSize ) : 
+OutputBuffer<T>::OutputBuffer( int fd, uint64_t bufferSize ) : 
         _fd(fd),
         _bufferSize(bufferSize),
         _pos(0) {
     
-    _buffer = new T[bufferSize];
+    _buffer = new char[bufferSize];
     
 }
 
 template<typename T>
-outputBuffer<T>::~outputBuffer() {
+OutputBuffer<T>::~OutputBuffer() {
     flush();
     delete[] _buffer;
 }
 
 template<typename T>
-size_t outputBuffer<T>::writeBackChunk() {
+size_t OutputBuffer<T>::writeBackChunk() {
     if(_pos == 0) {
         return 0;
     }
     
-    size_t wroteBytes = write(  _fd, _buffer, _pos * DATA_SIZE );
+    size_t wroteBytes = write(  _fd, _buffer, _pos  );
     
     _pos = 0;
     
@@ -107,26 +109,32 @@ size_t outputBuffer<T>::writeBackChunk() {
 }
 
 template<typename T>
-size_t outputBuffer<T>::writeChunk( T* buffer, uint64_t len, uint64_t offset ) {
+void OutputBuffer<T>::writeChunk( T* buffer, uint64_t len, uint64_t offset ) {
     for( uint64_t i = 0; i < len; i++ ) {
         writeElement( buffer[offset + i] );
     }
 }
 
 template<typename T>
-size_t outputBuffer<T>::writeElement( T element ) {
-    _buffer[_pos] = element;
+void OutputBuffer<T>::writeElement( T element ) {
+    //std::cout << element << "," << DATA_SIZE << "," << _pos << std::endl;
+    memcpy( _buffer + _pos, &element, DATA_SIZE);
     
-    _pos++;
+    _pos += DATA_SIZE;
     
-    if(_pos == _bufferSize) {
+    if(_pos >= _bufferSize) {
         writeBackChunk();
     }
 }
     
 template<typename T>
-void outputBuffer<T>::flush() {
+void OutputBuffer<T>::flush() {
     writeBackChunk();
+}
+
+template<typename T>
+int OutputBuffer<T>::getFd() {
+    return _fd;
 }
 
 
