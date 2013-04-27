@@ -26,8 +26,11 @@
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" testData 0 10</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" testData output 3</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" testData output 10</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" testData output 80</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" testData 0 10</runcommand>
+        <runcommand>"${OUTPUT_PATH}" testData output 80</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
