@@ -4,11 +4,11 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>ExternalSorter.hpp</itemPath>
-      <itemPath>InputBuffer.hpp</itemPath>
+      <itemPath>extSort/ExternalSorter.hpp</itemPath>
+      <itemPath>extSort/InputBuffer.hpp</itemPath>
       <itemPath>OutputBuffer.hpp</itemPath>
-      <itemPath>RunDescriptor.hpp</itemPath>
-      <itemPath>file_descriptor.hpp</itemPath>
+      <itemPath>extSort/RunDescriptor.hpp</itemPath>
+      <itemPath>extSort/file_descriptor.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -17,10 +17,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>ExternalSorter.cpp</itemPath>
-      <itemPath>RunDescriptor.cpp</itemPath>
-      <itemPath>file_descriptor.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
+      <itemPath>extSort/ExternalSorter.cpp</itemPath>
+      <itemPath>extSort/RunDescriptor.cpp</itemPath>
+      <itemPath>extSort/file_descriptor.cpp</itemPath>
+      <itemPath>extSort/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -49,23 +49,23 @@
           <standard>8</standard>
         </ccTool>
       </compileType>
-      <item path="ExternalSorter.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="ExternalSorter.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="InputBuffer.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="OutputBuffer.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="RunDescriptor.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/ExternalSorter.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="RunDescriptor.hpp" ex="false" tool="3" flavor2="0">
+      <item path="extSort/ExternalSorter.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="file_descriptor.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/InputBuffer.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="file_descriptor.hpp" ex="false" tool="3" flavor2="0">
+      <item path="extSort/RunDescriptor.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/RunDescriptor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="extSort/file_descriptor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="extSort/file_descriptor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="extSort/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -89,23 +89,23 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="ExternalSorter.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="ExternalSorter.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="InputBuffer.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="OutputBuffer.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="RunDescriptor.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/ExternalSorter.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="RunDescriptor.hpp" ex="false" tool="3" flavor2="0">
+      <item path="extSort/ExternalSorter.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="file_descriptor.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/InputBuffer.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="file_descriptor.hpp" ex="false" tool="3" flavor2="0">
+      <item path="extSort/RunDescriptor.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="extSort/RunDescriptor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="extSort/file_descriptor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="extSort/file_descriptor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="extSort/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

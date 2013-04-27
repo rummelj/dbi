@@ -35,10 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/ExternalSorter.o \
-	${OBJECTDIR}/RunDescriptor.o \
-	${OBJECTDIR}/file_descriptor.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/extSort/ExternalSorter.o \
+	${OBJECTDIR}/extSort/RunDescriptor.o \
+	${OBJECTDIR}/extSort/file_descriptor.o \
+	${OBJECTDIR}/extSort/main.o
 
 
 # C Compiler Flags
@@ -65,25 +65,25 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/ExternalSorter.o: ExternalSorter.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/extSort/ExternalSorter.o: extSort/ExternalSorter.cpp 
+	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/ExternalSorter.o ExternalSorter.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/ExternalSorter.o extSort/ExternalSorter.cpp
 
-${OBJECTDIR}/RunDescriptor.o: RunDescriptor.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/extSort/RunDescriptor.o: extSort/RunDescriptor.cpp 
+	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/RunDescriptor.o RunDescriptor.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/RunDescriptor.o extSort/RunDescriptor.cpp
 
-${OBJECTDIR}/file_descriptor.o: file_descriptor.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/extSort/file_descriptor.o: extSort/file_descriptor.cpp 
+	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/file_descriptor.o file_descriptor.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/file_descriptor.o extSort/file_descriptor.cpp
 
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/extSort/main.o: extSort/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/main.o extSort/main.cpp
 
 # Subprojects
 .build-subprojects:
