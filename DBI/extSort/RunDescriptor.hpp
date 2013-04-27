@@ -16,6 +16,8 @@ namespace dbi {
 
     class RunDescriptor {
     private:
+        
+        static const uint32_t MAX_FILENAME_LENGTH = 128;
 
         const char* FILENAME_PREFIX = "run";
 
@@ -25,12 +27,12 @@ namespace dbi {
 
         int openForRead();
         int createAndOpen();
-        
+
         int remove();
-        
+
     private:
 
-        char _fileName[128];
+        char _fileName[MAX_FILENAME_LENGTH];
 
         uint64_t _number;
 

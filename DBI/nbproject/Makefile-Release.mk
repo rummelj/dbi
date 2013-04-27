@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
+	${OBJECTDIR}/extSort/SortQueue.o \
 	${OBJECTDIR}/extSort/file_descriptor.o \
 	${OBJECTDIR}/extSort/main.o
 
@@ -74,6 +75,11 @@ ${OBJECTDIR}/extSort/RunDescriptor.o: extSort/RunDescriptor.cpp
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/RunDescriptor.o extSort/RunDescriptor.cpp
+
+${OBJECTDIR}/extSort/SortQueue.o: extSort/SortQueue.cpp 
+	${MKDIR} -p ${OBJECTDIR}/extSort
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/SortQueue.o extSort/SortQueue.cpp
 
 ${OBJECTDIR}/extSort/file_descriptor.o: extSort/file_descriptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort

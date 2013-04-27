@@ -17,14 +17,14 @@
 using namespace dbi;
 
 RunDescriptor::RunDescriptor(uint64_t number) : _number(number) {
-    sprintf( _fileName, "%s%lld", FILENAME_PREFIX, number );
+    snprintf( _fileName, MAX_FILENAME_LENGTH, "%s%lld", FILENAME_PREFIX, number );
 }
 
 RunDescriptor::~RunDescriptor() {
 }
 
 int RunDescriptor::createAndOpen() {
-    return open(_fileName, O_WRONLY | O_CREAT, S_IROTH | S_IRGRP | S_IWUSR | S_IRUSR);
+    return open(_fileName, O_WRONLY | O_CREAT, S_IROTH | S_IRGRP | S_IWUSR | S_IRUSR );
 }
 
 int RunDescriptor::openForRead() {

@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <cstring>
 
+namespace dbi {
+
 template<typename T>
 class OutputBuffer {
 public:
@@ -137,6 +139,7 @@ int OutputBuffer<T>::getFd() {
     return _fd;
 }
 
+}
 
 #endif	/* OUTPUTBUFFER_HPP */
 
