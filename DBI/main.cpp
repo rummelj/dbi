@@ -23,20 +23,11 @@ int main( int argc, char** argv )
 		return EXIT_FAILURE;
 	}
 
-	uint64_t memSize = atoi(argv[3]); // * 1024 * 1024;
+	uint64_t memSize = atoi(argv[3]) * 1024 * 1024;
         
         ExternalSorter sorter( argv[1], argv[2], memSize );
         
         sorter.sort();
-        
-        //TODO open input/output file, aquire filesize
-                
-        //int fd = open( argv[1], O_RDONLY );
-        //TODO error checking and RAII maybe
-	
-	//externalSort( fd, 0, 0, memSize ); 
-        
-        //close(fd);
 
 	return EXIT_SUCCESS;
 }
