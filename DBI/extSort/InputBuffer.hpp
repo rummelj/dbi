@@ -12,10 +12,14 @@
 
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <cstdio>
 #include <cstdint>
 #include <cstring>
+#include <cassert>
 
 namespace dbi {
 
@@ -23,9 +27,11 @@ namespace dbi {
     class InputBuffer {
     public:
         InputBuffer(int fd, uint64_t bufferSize);
-        virtual ~InputBuffer();
 
-    private:
+        virtual ~InputBuffer() {
+        }
+
+    protected:
 
         const size_t DATA_SIZE = sizeof (T);
 
@@ -42,7 +48,7 @@ namespace dbi {
          * 
          * @return the number of bytes read
          */
-        size_t loadNextChunk();
+        virtual size_t loadNextChunk() = 0;
 
     public:
 
@@ -71,28 +77,49 @@ namespace dbi {
     };
 
     template<typename T>
+    class ArrayInputBuffer : public InputBuffer<T> {
+    public:
+
+        ArrayInputBuffer(int fd, uint64_t bufferSize);
+
+        virtual ~ArrayInputBuffer();
+
+    protected:
+
+        size_t loadNextChunk();
+
+    };
+
+    template<typename T>
+    class MMapInputBuffer : public InputBuffer<T> {
+    public:
+
+
+        MMapInputBuffer(int fd, uint64_t bufferSize);
+
+        virtual ~MMapInputBuffer();
+
+    private:
+        const long PAGE_SIZE;
+
+        uint64_t _offset;
+        
+        off_t _file_size;
+
+    protected:
+
+        size_t loadNextChunk();
+
+    };
+
+    template<typename T>
     InputBuffer<T>::InputBuffer(int fd, uint64_t bufferSize) :
     _fd(fd),
     _bufferSize(bufferSize),
     _cur(-1),
-    _currentChunkSize(-1) {
+    _currentChunkSize(-1),
+    _buffer(NULL) {
 
-        _buffer = new char[bufferSize];
-    }
-
-    template<typename T>
-    InputBuffer<T>::~InputBuffer() {
-        delete[] _buffer;
-    }
-
-    template<typename T>
-    size_t InputBuffer<T>::loadNextChunk() {
-        _cur = 0;
-
-        size_t readBytes = read(_fd, _buffer, _bufferSize );
-        _currentChunkSize = readBytes;
-
-        return readBytes;
     }
 
     template<typename T>
@@ -107,8 +134,8 @@ namespace dbi {
                 return loadResult;
             }
         }
-        
-        memcpy( &dest, _buffer + _cur, DATA_SIZE);
+
+        memcpy(&dest, _buffer + _cur, DATA_SIZE);
 
         _cur += DATA_SIZE;
 
@@ -119,17 +146,94 @@ namespace dbi {
     size_t InputBuffer<T>::getNextChunk(T*& dest) {
         size_t readBytes = loadNextChunk();
 
-        dest = (T*)_buffer;
+        dest = (T*) _buffer;
 
         return readBytes / DATA_SIZE;
     }
-    
+
     template<typename T>
     int InputBuffer<T>::getFd() {
         return _fd;
     }
 
+    template<typename T>
+    ArrayInputBuffer<T>::ArrayInputBuffer(int fd, uint64_t bufferSize) : InputBuffer<T>(fd, bufferSize) {
+        this->_buffer = new char[bufferSize];
+    }
+
+    template<typename T>
+    ArrayInputBuffer<T>::~ArrayInputBuffer() {
+        delete[] this->_buffer;
+    }
+
+    template<typename T>
+    size_t ArrayInputBuffer<T>::loadNextChunk() {
+        this->_cur = 0;
+
+        size_t readBytes = read(this->_fd, this->_buffer, this->_bufferSize);
+        this->_currentChunkSize = readBytes;
+
+        return readBytes;
+    }
+
+    template<typename T>
+    MMapInputBuffer<T>::MMapInputBuffer(int fd, uint64_t bufferSize)
+    : InputBuffer<T>(fd, bufferSize),
+    PAGE_SIZE(sysconf(_SC_PAGESIZE)),
+    _offset(0) {
+
+        assert((bufferSize / PAGE_SIZE) * PAGE_SIZE == bufferSize); // bufferSize has to be multiple of the pagesize
+        
+        struct stat statData;
+        
+        if(fstat(fd, &statData) == -1) {
+            perror("fstat");
+            assert(false);
+        }
+        
+        _file_size = statData.st_size;
+    }
+
+    template<typename T>
+    MMapInputBuffer<T>::~MMapInputBuffer() {
+
+        if (this->_buffer != NULL) {
+            munmap(this->_buffer, this->_currentChunkSize);
+        }
+
+    }
+
+    template<typename T>
+    size_t MMapInputBuffer<T>::loadNextChunk() {
+        this->_cur = 0;
+
+        if (this->_buffer != NULL) {
+            munmap(this->_buffer, this->_currentChunkSize);
+        }
+        
+        if(_offset >= _file_size ) {
+            return 0;
+        }
+        
+        this->_buffer = (char*)mmap(NULL, this->_bufferSize, PROT_READ | PROT_WRITE, MAP_PRIVATE, this->_fd, _offset);
+
+        if (this->_buffer == MAP_FAILED) {
+            perror("mmap");
+            assert(false);
+        }
+
+        _offset += this->_bufferSize;
+
+        this->_currentChunkSize = this->_bufferSize;
+        return this->_currentChunkSize;
+    }
+
+
+
+
 }
+
+
 
 #endif	/* INPUTBUFFER_HPP */
 

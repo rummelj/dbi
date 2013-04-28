@@ -77,7 +77,7 @@ void ExternalSorter::externalSort(int fdInput, uint64_t size, int fdOutput) {
 
 std::vector<RunDescriptor*>* ExternalSorter::readChunks(const int fdInput, const uint64_t size) {
 
-    InputBuffer<uint64_t> inBuf(fdInput, _memSize);
+    MMapInputBuffer<uint64_t> inBuf(fdInput, _memSize);
 
     std::vector<RunDescriptor*>* runDescriptors = new std::vector<RunDescriptor*>();
     
@@ -119,7 +119,7 @@ void ExternalSorter::mergeRuns( std::vector<RunDescriptor*>& runDescriptors, con
     std::vector<InputBuffer<uint64_t>*> runInputBuffers;
     
     for( RunDescriptor*& descriptor : runDescriptors ) {
-        runInputBuffers.push_back( new InputBuffer<uint64_t>( descriptor->openForRead(), memoryPerRun )  );
+        runInputBuffers.push_back( new ArrayInputBuffer<uint64_t>( descriptor->openForRead(), memoryPerRun )  );
     }
     
     OutputBuffer<uint64_t> outBuf( fdOutput, memoryPerRun );
