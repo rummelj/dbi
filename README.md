@@ -3,8 +3,8 @@ dbi
 
 Simple database implementation for university lecture
 
-INSTALL
-=======
+Installation: sort
+==================
 
 Change into directory DBI, type `make` and hope.
 
