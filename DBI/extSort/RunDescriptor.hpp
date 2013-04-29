@@ -25,10 +25,12 @@ namespace dbi {
         RunDescriptor(uint64_t number);
         virtual ~RunDescriptor();
 
-        int openForRead();
-        int createAndOpen();
+        int openForRead() const;
+        int createAndOpen() const;
+        
+        void createAndWrite( const uint64_t* chunk, const size_t readElements ) const;
 
-        int remove();
+        int remove() const;
 
     private:
 

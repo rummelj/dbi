@@ -84,8 +84,9 @@ public:
 template<typename T>
 OutputBuffer<T>::OutputBuffer( int fd, uint64_t bufferSize ) : 
         _fd(fd),
-        _bufferSize(bufferSize),
-        _pos(0) {
+        _pos(0),
+        _bufferSize(bufferSize)
+         {
     
     _buffer = new char[bufferSize];
     

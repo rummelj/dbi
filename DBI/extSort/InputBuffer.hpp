@@ -40,7 +40,7 @@ namespace dbi {
 
         char* _buffer;
 
-        size_t _cur;
+        off_t _cur;
         size_t _currentChunkSize;
 
         /**
@@ -102,8 +102,8 @@ namespace dbi {
     private:
         const long PAGE_SIZE;
 
-        uint64_t _offset;
-        
+        off_t _offset;
+
         off_t _file_size;
 
     protected:
@@ -116,9 +116,9 @@ namespace dbi {
     InputBuffer<T>::InputBuffer(int fd, uint64_t bufferSize) :
     _fd(fd),
     _bufferSize(bufferSize),
+    _buffer(NULL),
     _cur(-1),
-    _currentChunkSize(-1),
-    _buffer(NULL) {
+    _currentChunkSize(-1) {
 
     }
 
@@ -127,7 +127,7 @@ namespace dbi {
         //load new chunk either when no chunk was loaded before (_cur==-1), or current chunk is at the end (_cur== _bufferSize))
         // return 1 when everything was okay
 
-        if (_cur == -1 || _cur == _currentChunkSize) {
+        if (_cur == -1 || (size_t)_cur == _currentChunkSize) {
             size_t loadResult = loadNextChunk();
 
             if (loadResult <= 0) {
@@ -183,14 +183,14 @@ namespace dbi {
     _offset(0) {
 
         assert((bufferSize / PAGE_SIZE) * PAGE_SIZE == bufferSize); // bufferSize has to be multiple of the pagesize
-        
+
         struct stat statData;
-        
-        if(fstat(fd, &statData) == -1) {
+
+        if (fstat(fd, &statData) < 0) {
             perror("fstat");
             assert(false);
         }
-        
+
         _file_size = statData.st_size;
     }
 
@@ -210,12 +210,12 @@ namespace dbi {
         if (this->_buffer != NULL) {
             munmap(this->_buffer, this->_currentChunkSize);
         }
-        
-        if(_offset >= _file_size ) {
+
+        if (_offset >= _file_size) {
             return 0;
         }
-        
-        this->_buffer = (char*)mmap(NULL, this->_bufferSize, PROT_READ | PROT_WRITE, MAP_PRIVATE, this->_fd, _offset);
+
+        this->_buffer = (char*) mmap(NULL, this->_bufferSize, PROT_READ | PROT_WRITE, MAP_PRIVATE, this->_fd, _offset);
 
         if (this->_buffer == MAP_FAILED) {
             perror("mmap");

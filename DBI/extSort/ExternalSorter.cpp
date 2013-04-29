@@ -53,16 +53,19 @@ ExternalSorter::~ExternalSorter() {
 
 void ExternalSorter::sort() {
 
-    file_descriptor fdInput(open(_fileInput, O_RDONLY));
-    file_descriptor fdOutput(open(_fileOutput, O_WRONLY | O_CREAT, S_IROTH | S_IRGRP | S_IRUSR | S_IWUSR)); //files will be closed when file_descriptor gets deleted
-
-    const uint64_t numberCount = fdInput.getSize() / sizeof (uint64_t);
+    file_descriptor fdInput( open(_fileInput, O_RDONLY) );
+    file_descriptor fdOutput( open(_fileOutput, O_WRONLY | O_CREAT, S_IROTH | S_IRGRP | S_IRUSR | S_IWUSR) ); //files will be closed when file_descriptor gets deleted
+    
+    const uint64_t inputSize = fdInput.getSize();
+    const uint64_t numberCount = inputSize / sizeof (uint64_t);
+    
+    fdOutput.preallocate( inputSize );
 
     externalSort(fdInput, numberCount, fdOutput);
 
 }
 
-void ExternalSorter::externalSort(int fdInput, uint64_t size, int fdOutput) {
+void ExternalSorter::externalSort(int fdInput, uint64_t size, int fdOutput) const {
 
     std::unique_ptr<std::vector<RunDescriptor*>> runDescriptors( readChunks( fdInput, size ) );
     
@@ -75,10 +78,10 @@ void ExternalSorter::externalSort(int fdInput, uint64_t size, int fdOutput) {
 
 }
 
-std::vector<RunDescriptor*>* ExternalSorter::readChunks(const int fdInput, const uint64_t size) {
+std::vector<RunDescriptor*>* ExternalSorter::readChunks(const int fdInput, const uint64_t size) const {
 
-    MMapInputBuffer<uint64_t> inBuf(fdInput, _memSize);
-
+    ArrayInputBuffer<uint64_t> inBuf(fdInput, _memSize);
+    
     std::vector<RunDescriptor*>* runDescriptors = new std::vector<RunDescriptor*>();
     
     uint64_t* chunk_ptr;
@@ -101,20 +104,21 @@ std::vector<RunDescriptor*>* ExternalSorter::readChunks(const int fdInput, const
     return runDescriptors;
 }
 
-RunDescriptor* ExternalSorter::sortChunk(uint64_t* chunk_ptr, const size_t readElements, const uint64_t runNumber) {
-    std::sort(chunk_ptr, chunk_ptr + readElements);
+RunDescriptor* ExternalSorter::sortChunk(uint64_t* chunk_ptr, const size_t numElements, const uint64_t runNumber) const {
+
+    std::sort(chunk_ptr, chunk_ptr + numElements);
     
     RunDescriptor* newRun = new RunDescriptor( runNumber );
-    file_descriptor runFd( newRun->createAndOpen() );
-    write( runFd, chunk_ptr, readElements * sizeof(uint64_t) );
+    newRun->createAndWrite( chunk_ptr, numElements );
 
     return newRun;
 }
 
-void ExternalSorter::mergeRuns( std::vector<RunDescriptor*>& runDescriptors, const int fdOutput ) {
+void ExternalSorter::mergeRuns( std::vector<RunDescriptor*>& runDescriptors, const int fdOutput ) const {
     const uint64_t numRuns = runDescriptors.size(); 
     
     const uint64_t memoryPerRun = ((_memSize / (numRuns+1)) / sizeof(uint64_t)) * sizeof(uint64_t); //TODO numRuns + 1 might be > _memSize
+    assert(memoryPerRun >= sizeof(uint64_t));
     
     std::vector<InputBuffer<uint64_t>*> runInputBuffers;
     

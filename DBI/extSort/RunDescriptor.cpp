@@ -12,25 +12,37 @@
 #include <unistd.h>
 #include <assert.h>
 
+#include "file_descriptor.hpp"
 #include "RunDescriptor.hpp"
 
 using namespace dbi;
 
 RunDescriptor::RunDescriptor(uint64_t number) : _number(number) {
-    snprintf( _fileName, MAX_FILENAME_LENGTH, "%s%lld", FILENAME_PREFIX, number );
+    snprintf( _fileName, MAX_FILENAME_LENGTH, "%s%lu", FILENAME_PREFIX, number );
 }
 
 RunDescriptor::~RunDescriptor() {
 }
 
-int RunDescriptor::createAndOpen() {
+int RunDescriptor::createAndOpen() const {
     return open(_fileName, O_WRONLY | O_CREAT, S_IROTH | S_IRGRP | S_IWUSR | S_IRUSR );
 }
 
-int RunDescriptor::openForRead() {
+int RunDescriptor::openForRead() const {
     return open( _fileName, O_RDONLY );
 }
 
-int RunDescriptor::remove() {
+void RunDescriptor::createAndWrite( const uint64_t* chunk, const size_t numElements ) const {
+    
+    const uint64_t numBytes = numElements * sizeof(uint64_t);
+    
+    file_descriptor runFd( createAndOpen() );
+    
+    runFd.preallocate( numBytes );
+    write( runFd, chunk, numBytes );
+    
+}
+
+int RunDescriptor::remove() const {
     return unlink( _fileName );
 }

@@ -17,6 +17,7 @@ namespace dbi {
     class RunDescriptor;
     
     class ExternalSorter {
+        
     public:
         ExternalSorter(const char* fileInput, const char* fileOutput, uint64_t memSize);
         virtual ~ExternalSorter();
@@ -32,13 +33,13 @@ namespace dbi {
         uint64_t _memSize;
 
 
-        void externalSort(int fdInput, uint64_t size, int fdOutput);
+        void externalSort(int fdInput, uint64_t size, int fdOutput) const;
 
-        RunDescriptor* sortChunk(uint64_t* chunk_ptr, const size_t readElements, const uint64_t runNumber);
+        RunDescriptor* sortChunk(uint64_t* chunk_ptr, const size_t numElements, const uint64_t runNumber) const;
 
-        std::vector<RunDescriptor*>* readChunks(const int fdInput, const uint64_t size);
+        std::vector<RunDescriptor*>* readChunks(const int fdInput, const uint64_t size) const;
 
-        void mergeRuns( std::vector<RunDescriptor*>& runDescriptors, const int fdOutput );
+        void mergeRuns( std::vector<RunDescriptor*>& runDescriptors, const int fdOutput ) const;
         
     };
 

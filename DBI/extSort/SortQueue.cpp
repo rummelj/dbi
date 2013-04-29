@@ -46,8 +46,6 @@ void SortQueue::sort() {
 
         _outBuf.writeElement(sortedElement->value);
 
-        //std::cout << "top:" << sortedElement.value << std::endl;
-
         size_t readBytes = sortedElement->runBuffer->getNextElement(sortedElement->value);
 
         if (readBytes == 1) {

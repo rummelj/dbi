@@ -60,36 +60,36 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/extSort/ExternalSorter.o: extSort/ExternalSorter.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/ExternalSorter.o extSort/ExternalSorter.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/ExternalSorter.o extSort/ExternalSorter.cpp
 
 ${OBJECTDIR}/extSort/RunDescriptor.o: extSort/RunDescriptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/RunDescriptor.o extSort/RunDescriptor.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/RunDescriptor.o extSort/RunDescriptor.cpp
 
 ${OBJECTDIR}/extSort/SortQueue.o: extSort/SortQueue.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/SortQueue.o extSort/SortQueue.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/SortQueue.o extSort/SortQueue.cpp
 
 ${OBJECTDIR}/extSort/file_descriptor.o: extSort/file_descriptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/file_descriptor.o extSort/file_descriptor.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/file_descriptor.o extSort/file_descriptor.cpp
 
 ${OBJECTDIR}/extSort/main.o: extSort/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/main.o extSort/main.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/main.o extSort/main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -97,7 +97,7 @@ ${OBJECTDIR}/extSort/main.o: extSort/main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort
 
 # Subprojects
 .clean-subprojects:

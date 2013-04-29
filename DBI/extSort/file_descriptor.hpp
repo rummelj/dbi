@@ -21,6 +21,8 @@ public:
     
     uint64_t getSize();
     
+    void preallocate( uint64_t len, uint64_t offset = 0 );
+    
 private:
     
     int _fd;

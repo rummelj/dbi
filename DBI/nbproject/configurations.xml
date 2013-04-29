@@ -53,7 +53,11 @@
         <ccTool>
           <architecture>2</architecture>
           <standard>8</standard>
+          <warningLevel>2</warningLevel>
         </ccTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort</output>
+        </linkerTool>
       </compileType>
       <item path="extSort/ExternalSorter.cpp" ex="false" tool="1" flavor2="0">
       </item>

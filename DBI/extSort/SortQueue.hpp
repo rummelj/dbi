@@ -36,15 +36,15 @@ namespace dbi {
 
 
     public:
-        SortQueue(std::vector<InputBuffer<uint64_t>*>& runInputBuffers, OutputBuffer<uint64_t>& outBuf );
+        SortQueue(std::vector<InputBuffer<uint64_t>*>& runInputBuffers, OutputBuffer<uint64_t>& outBuf);
     private:
-        
+
         std::vector<InputBuffer<uint64_t>*>& _runInputBuffers;
         OutputBuffer<uint64_t>& _outBuf;
-        
+
         queue_t _sortQueue;
 
-        void initialize( );
+        void initialize();
 
     public:
 
