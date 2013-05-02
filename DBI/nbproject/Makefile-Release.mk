@@ -35,6 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/bufferManager/BufferFrame.o \
+	${OBJECTDIR}/bufferManager/BufferManager.o \
+	${OBJECTDIR}/bufferManager/PageFileManager.o \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
@@ -65,6 +68,21 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/bufferManager/BufferFrame.o: bufferManager/BufferFrame.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferFrame.o bufferManager/BufferFrame.cpp
+
+${OBJECTDIR}/bufferManager/BufferManager.o: bufferManager/BufferManager.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferManager.o bufferManager/BufferManager.cpp
+
+${OBJECTDIR}/bufferManager/PageFileManager.o: bufferManager/PageFileManager.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/PageFileManager.o bufferManager/PageFileManager.cpp
 
 ${OBJECTDIR}/extSort/ExternalSorter.o: extSort/ExternalSorter.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
