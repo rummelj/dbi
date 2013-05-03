@@ -38,6 +38,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/BufferFrame.o \
 	${OBJECTDIR}/bufferManager/BufferManager.o \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
+	${OBJECTDIR}/bufferManager/TwoQStrategy.o \
+	${OBJECTDIR}/bufferManager/main.o \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
@@ -49,8 +51,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-m64
-CXXFLAGS=-m64
+CCFLAGS=-m64 -lpthread
+CXXFLAGS=-m64 -lpthread
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -72,42 +74,52 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort: ${OBJECTFILES}
 ${OBJECTDIR}/bufferManager/BufferFrame.o: bufferManager/BufferFrame.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferFrame.o bufferManager/BufferFrame.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferFrame.o bufferManager/BufferFrame.cpp
 
 ${OBJECTDIR}/bufferManager/BufferManager.o: bufferManager/BufferManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferManager.o bufferManager/BufferManager.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferManager.o bufferManager/BufferManager.cpp
 
 ${OBJECTDIR}/bufferManager/PageFileManager.o: bufferManager/PageFileManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/PageFileManager.o bufferManager/PageFileManager.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/PageFileManager.o bufferManager/PageFileManager.cpp
+
+${OBJECTDIR}/bufferManager/TwoQStrategy.o: bufferManager/TwoQStrategy.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/TwoQStrategy.o bufferManager/TwoQStrategy.cpp
+
+${OBJECTDIR}/bufferManager/main.o: bufferManager/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/main.o bufferManager/main.cpp
 
 ${OBJECTDIR}/extSort/ExternalSorter.o: extSort/ExternalSorter.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/ExternalSorter.o extSort/ExternalSorter.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/ExternalSorter.o extSort/ExternalSorter.cpp
 
 ${OBJECTDIR}/extSort/RunDescriptor.o: extSort/RunDescriptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/RunDescriptor.o extSort/RunDescriptor.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/RunDescriptor.o extSort/RunDescriptor.cpp
 
 ${OBJECTDIR}/extSort/SortQueue.o: extSort/SortQueue.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/SortQueue.o extSort/SortQueue.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/SortQueue.o extSort/SortQueue.cpp
 
 ${OBJECTDIR}/extSort/file_descriptor.o: extSort/file_descriptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/file_descriptor.o extSort/file_descriptor.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/file_descriptor.o extSort/file_descriptor.cpp
 
 ${OBJECTDIR}/extSort/main.o: extSort/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/main.o extSort/main.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/main.o extSort/main.cpp
 
 # Subprojects
 .build-subprojects:

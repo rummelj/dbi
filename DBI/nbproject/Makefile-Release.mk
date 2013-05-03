@@ -38,6 +38,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/BufferFrame.o \
 	${OBJECTDIR}/bufferManager/BufferManager.o \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
+	${OBJECTDIR}/bufferManager/TwoQStrategy.o \
+	${OBJECTDIR}/bufferManager/main.o \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
@@ -83,6 +85,16 @@ ${OBJECTDIR}/bufferManager/PageFileManager.o: bufferManager/PageFileManager.cpp
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/PageFileManager.o bufferManager/PageFileManager.cpp
+
+${OBJECTDIR}/bufferManager/TwoQStrategy.o: bufferManager/TwoQStrategy.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/TwoQStrategy.o bufferManager/TwoQStrategy.cpp
+
+${OBJECTDIR}/bufferManager/main.o: bufferManager/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/main.o bufferManager/main.cpp
 
 ${OBJECTDIR}/extSort/ExternalSorter.o: extSort/ExternalSorter.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort

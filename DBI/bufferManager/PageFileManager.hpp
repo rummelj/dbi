@@ -10,53 +10,55 @@
 
 #include <string>
 
-class PageFileManager {
-public:
-    PageFileManager(const std::string& filename);
-    virtual ~PageFileManager();
+namespace dbi {
 
-    /**
-     * Reads a page from disk.
-     * @param pageId
-     * Id of the page
-     * @return 
-     * data stored on the page.
-     */
-    void* readPage(uint64_t pageId);
+    class PageFileManager {
+    public:
+        PageFileManager(const std::string& filename);
+        virtual ~PageFileManager();
 
-    /**
-     * Creates a new page with empty data.
-     * @param pageId
-     * id of the new page
-     * @return 
-     */
-    void createPage(uint64_t pageId);
+        /**
+         * Reads a page from disk.
+         * @param pageId
+         * Id of the page
+         * @return 
+         * data stored on the page.
+         */
+        void* readPage(uint64_t pageId);
 
-    /**
-     * Writes a new page to disk or overwrites an existing page
-     * @param pageId
-     * Existing pageId or new pageId
-     * @param data
-     * data to be stored in the page
-     */
-    void writePage(uint64_t pageId, void* data);
+        /**
+         * Creates a new page with empty data.
+         * @param pageId
+         * id of the new page
+         * @return 
+         */
+        void createPage(uint64_t pageId);
 
-    /**
-     * Checks if the page with the given id is existing.
-     * @param pageId
-     * @return 
-     */
-    bool isExisting(uint64_t pageId);
+        /**
+         * Writes a new page to disk or overwrites an existing page
+         * @param pageId
+         * Existing pageId or new pageId
+         * @param data
+         * data to be stored in the page
+         */
+        void writePage(uint64_t pageId, void* data);
 
-    /**
-     * Gets all page ids available
-     * @return 
-     * An array of all pages available on disk
-     */
-    uint64_t* getPages();
-private:
+        /**
+         * Checks if the page with the given id is existing.
+         * @param pageId
+         * @return 
+         */
+        bool isExisting(uint64_t pageId);
 
-};
+        /**
+         * Gets all page ids available
+         * @return 
+         * An array of all pages available on disk
+         */
+        uint64_t* getPages();
+    private:
 
+    };
+}
 #endif	/* PAGEFILEMANAGER_HPP */
 
