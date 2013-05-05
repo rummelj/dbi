@@ -8,6 +8,11 @@
 #include <string>
 #include <map>
 
+#include <cstdio>
+#include <unistd.h>
+
+#include <iostream>
+
 #include "BufferManager.hpp"
 
 using namespace std;
@@ -34,6 +39,12 @@ namespace dbi {
     }
 
     BufferFrame& BufferManager::fixPage(uint64_t pageId, bool exclusive) {
+        if(pageId == 962) {
+            int i = 0;
+            i++;
+        }
+        std::clog << "fixing " << pageId << " exclusive " << exclusive << std::endl;
+        
         if (isInBuffer(pageId)) {
             BufferFrame& bf = getFromBuffer(pageId);
             pthread_mutex_lock(&bf._exclusive_mutex);
@@ -60,14 +71,25 @@ namespace dbi {
     }
 
     void BufferManager::unfixPage(BufferFrame& frame, bool isDirty) {
+        if(frame._pageId == 962) {
+            int i = 0;
+            i++;
+        }
+        
+        std::clog << "unfixing " << frame._pageId << " dirty " << isDirty << std::endl;
+        
         if (frame._dirty && !frame._exclusive) {
             //@todo: Cannot make a frame dirty that was not held exclusively
+            
+            perror("unfixPage");
+            
             throw 42;
         }
 
         frame._fixCount--;
         frame._dirty = frame._dirty || isDirty;
         if (frame._fixCount == 0 || frame._exclusive) {
+            std::clog << "releasing the kraken" << std::endl;
             _twoQ.release(frame._pageId);
             frame._exclusive = false;
             pthread_cond_signal(&frame._exclusive_changed);
@@ -85,10 +107,18 @@ namespace dbi {
     void BufferManager::saveInBuffer(uint64_t pageId, BufferFrame& bufferFrame) {
         while (_buffer.size() >= _size) {
             uint64_t evictable = _twoQ.getEvictable();
-            if (evictable == 0) {
-                //@todo
-                throw 42;
-            }
+                    
+//            while ((evictable = ) == 0) {
+//                
+//                
+//                //@todo evict busy waiting
+//                usleep(1000);
+//                
+//                //perror("evictable");
+//                //@todo
+//                //throw 42;
+//            }
+                    
             clearFromBuffer(evictable);
         }
         _twoQ.know(pageId);
@@ -98,7 +128,7 @@ namespace dbi {
     void BufferManager::clearFromBuffer(uint64_t pageId) {
         if (isInBuffer(pageId)) {
             //Write dirty page
-            BufferFrame bf = getFromBuffer(pageId);
+            BufferFrame& bf = getFromBuffer(pageId);
             if (bf._dirty) {
                 _pageFileManager.writePage(pageId, bf.getData());
             }

@@ -50,6 +50,14 @@ static void* readWrite(void *arg) {
 
    uintptr_t count = 0;
    for (unsigned i=0; i<100000/threadCount; i++) {
+       
+       if(i == 22) {
+           i++;
+           i--;
+       }
+       
+       std::clog << "iteration " << i << " thread #" << threadNum << std::endl;
+       
       bool isWrite = rand_r(&threadSeed[threadNum])%128<10;
       BufferFrame bf = bm->fixPage(randomPage(threadNum), isWrite);
 
@@ -83,38 +91,51 @@ int main(int argc, char** argv) {
    pthread_attr_t pattr;
    pthread_attr_init(&pattr);
 
-   // set all counters to 0
+   std::clog << "// set all counters to 0" << std::endl;
+   
    for (unsigned i=0; i<pagesOnDisk; i++) {
+       if(i == 256) {
+           i = i+1;
+           i = i-1;
+       }
+       
+       std::clog << "page #" << i << std::endl;
       BufferFrame bf = bm->fixPage(i, true);
       reinterpret_cast<unsigned*>(bf.getData())[0]=0;
       bm->unfixPage(bf, true);
    }
+   
 
-   // start scan thread
+   std::clog << "// start scan thread" << std::endl;
    pthread_t scanThread;
    pthread_create(&scanThread, &pattr, scan, NULL);
 
-   // start read/write threads
+   std::clog << "// start read/write threads" << std::endl;
    for (unsigned i=0; i<threadCount; i++)
       pthread_create(&threads[i], &pattr, readWrite, reinterpret_cast<void*>(i));
 
-   // wait for read/write threads
+   std::cout << std::flush;
+   
+   std::clog << "// wait for read/write threads" << std::endl;
    unsigned totalCount = 0;
    for (unsigned i=0; i<threadCount; i++) {
       void *ret;
+      
+      std::clog << "joining thread #" << i << std::endl;
+
       pthread_join(threads[i], &ret);
       totalCount+=reinterpret_cast<uintptr_t>(ret);
    }
 
-   // wait for scan thread
+   std::clog << "// wait for scan thread" << std::endl;
    stop=true;
    pthread_join(scanThread, NULL);
 
-   // restart buffer manager
+   std::clog << "// restart buffer manager" << std::endl;
    delete bm;
    bm = new dbi::BufferManager(argv[1], pagesInRAM);
    
-   // check counter
+   std::clog << "// check counter" << std::endl;
    unsigned totalCountOnDisk = 0;
    for (unsigned i=0; i<pagesOnDisk; i++) {
       BufferFrame bf = bm->fixPage(i,false);

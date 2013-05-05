@@ -9,6 +9,7 @@
 
 #include "TwoQStrategy.hpp"
 #include "EnrichedQueue.hpp"
+#include "DBIException.hpp"
 
 namespace dbi {
 
@@ -105,6 +106,7 @@ namespace dbi {
         for (int i = 0; i < _fifo.size(); i++) {
             uint64_t id = _fifo.get(i);
             if (!_preserved[id]) {
+                unlockFifo();
                 return id;
             }
         }
@@ -115,21 +117,24 @@ namespace dbi {
         for (int i = 0; i < _lru.size(); i++) {
             uint64_t id = _lru.get(i);
             if (!_preserved[id]) {
+                unlockLru();
                 return id;
             }
         }
         unlockLru();
 
         //Nothing found
-        return 0;
+        throw DBIException("getEvictable: no page ready");
     }
 
     unsigned int TwoQStrategy::size() {
         lockFifo();
         lockLru();
-        return _fifo.size() + _lru.size();
+        int size = _fifo.size() + _lru.size();
         unlockLru();
         unlockFifo();
+        
+        return size;
     }
 
     void TwoQStrategy::setPreserved(uint64_t id, bool value) {

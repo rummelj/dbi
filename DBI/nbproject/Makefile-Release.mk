@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/BufferFrame.o \
 	${OBJECTDIR}/bufferManager/BufferManager.o \
+	${OBJECTDIR}/bufferManager/DBIException.o \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
 	${OBJECTDIR}/bufferManager/TwoQStrategy.o \
 	${OBJECTDIR}/bufferManager/main.o \
@@ -80,6 +81,11 @@ ${OBJECTDIR}/bufferManager/BufferManager.o: bufferManager/BufferManager.cpp
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferManager.o bufferManager/BufferManager.cpp
+
+${OBJECTDIR}/bufferManager/DBIException.o: bufferManager/DBIException.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/DBIException.o bufferManager/DBIException.cpp
 
 ${OBJECTDIR}/bufferManager/PageFileManager.o: bufferManager/PageFileManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager

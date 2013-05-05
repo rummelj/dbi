@@ -37,14 +37,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/BufferFrame.o \
 	${OBJECTDIR}/bufferManager/BufferManager.o \
+	${OBJECTDIR}/bufferManager/DBIException.o \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
 	${OBJECTDIR}/bufferManager/TwoQStrategy.o \
 	${OBJECTDIR}/bufferManager/main.o \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
-	${OBJECTDIR}/extSort/file_descriptor.o \
-	${OBJECTDIR}/extSort/main.o
+	${OBJECTDIR}/extSort/file_descriptor.o
 
 
 # C Compiler Flags
@@ -65,11 +65,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/bufferManager/BufferFrame.o: bufferManager/BufferFrame.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
@@ -80,6 +80,11 @@ ${OBJECTDIR}/bufferManager/BufferManager.o: bufferManager/BufferManager.cpp
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferManager.o bufferManager/BufferManager.cpp
+
+${OBJECTDIR}/bufferManager/DBIException.o: bufferManager/DBIException.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/DBIException.o bufferManager/DBIException.cpp
 
 ${OBJECTDIR}/bufferManager/PageFileManager.o: bufferManager/PageFileManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
@@ -116,18 +121,13 @@ ${OBJECTDIR}/extSort/file_descriptor.o: extSort/file_descriptor.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/file_descriptor.o extSort/file_descriptor.cpp
 
-${OBJECTDIR}/extSort/main.o: extSort/main.cpp 
-	${MKDIR} -p ${OBJECTDIR}/extSort
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/main.o extSort/main.cpp
-
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sort
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi
 
 # Subprojects
 .clean-subprojects:

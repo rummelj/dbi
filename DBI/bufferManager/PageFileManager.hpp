@@ -9,6 +9,7 @@
 #define	PAGEFILEMANAGER_HPP
 
 #include <string>
+#include <unistd.h>
 
 namespace dbi {
 
@@ -57,6 +58,23 @@ namespace dbi {
          */
         uint64_t* getPages();
     private:
+
+	static const mode_t FILE_CREATE_FLAGS = 0644; // User ReadWrite, Group Read, Others Read
+	static const uint8_t PAGE_MULTIPLIER = 1;
+	const long OS_PAGE_SIZE ;
+
+	const std::string& _filename;
+	
+	const size_t _pageSize;
+
+	int _fd;
+
+	off_t _fileSize;
+
+
+	void recalculateFilesize();
+
+	
 
     };
 }
