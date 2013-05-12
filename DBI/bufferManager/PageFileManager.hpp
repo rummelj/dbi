@@ -57,6 +57,11 @@ namespace dbi {
          * An array of all pages available on disk
          */
         uint64_t* getPages();
+        
+        /**
+         * Closes a page and frees the buffer memory taken for this page
+         */
+        void closePage(uint64_t pageId, void* data);
     private:
 
 	static const mode_t FILE_CREATE_FLAGS = 0644; // User ReadWrite, Group Read, Others Read

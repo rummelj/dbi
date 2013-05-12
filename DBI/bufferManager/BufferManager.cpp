@@ -35,6 +35,8 @@ namespace dbi {
 
             if (bf->_dirty) {
                 _pageFileManager.writePage(pageId, bf->getData());
+            } else {
+                _pageFileManager.closePage(pageId, bf->getData());
             }
 
             delete(bf);
@@ -138,6 +140,8 @@ namespace dbi {
             BufferFrame& bf = getFromBuffer(pageId);
             if (bf._dirty) {
                 _pageFileManager.writePage(pageId, bf.getData());
+            } else {
+                _pageFileManager.closePage(pageId, bf.getData());
             }
 
             std::clog << "Deleting BufferFrame for Page #" << pageId << std::endl;

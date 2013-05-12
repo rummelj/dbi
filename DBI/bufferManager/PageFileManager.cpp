@@ -166,13 +166,15 @@ namespace dbi {
             assert(false);
         }
 
-        std::clog <<  "Deleting data at " << data << std::endl;
-                
+        closePage( pageId, data );
+    }
+    
+    void PageFileManager::closePage(uint64_t pageId, void* data) {
+        std::clog <<  "Deleting data for page #" << pageId <<" at " << data << std::endl;
+
         if (data != NULL) {
             delete[] (char*) data; //converting necessary due to compiler
-            data = NULL;
         }
-        
     }
 
     bool PageFileManager::isExisting(uint64_t pageId) {

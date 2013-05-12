@@ -8,7 +8,7 @@
 #include "BufferManager.hpp"
 #include "BufferFrame.hpp"
 
-#define DBI_DEBUG 1
+#define DBI_DEBUG
 
 using namespace dbi;
 
@@ -80,6 +80,8 @@ int main(int argc, char** argv) {
     
 #ifndef DBI_DEBUG
         ofstream ofs("/dev/null");
+        std::streambuf *backup_clog;
+        backup_clog = clog.rdbuf();
         clog.rdbuf(ofs.rdbuf());
 #endif
     
@@ -162,7 +164,8 @@ int main(int argc, char** argv) {
     }
     
 #ifndef DBI_DEBUG
-    ofs.flush();
+    clog.rdbuf(backup_clog);
+//    ofs.flush();
 #endif
     
     
