@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <iostream>
 #include <string>
 
 #include "PageFileManager.hpp"
@@ -49,7 +50,10 @@ namespace dbi {
     }
 
     PageFileManager::~PageFileManager() {
+        
+        std::clog << "PageFileManager is being deleted" << std::endl;
 
+        
         int status = close(_fd);
 
         if (status < 0) {
@@ -150,6 +154,8 @@ namespace dbi {
             assert(false);
         }
 
+        std::clog << "Writing page " << pageId << " data at " << data << " to file at pos " << offset << std::endl;
+        
         size_t wroteBytes = write(_fd, data, _pageSize);
 
         if (wroteBytes != _pageSize) {
@@ -160,10 +166,13 @@ namespace dbi {
             assert(false);
         }
 
+        std::clog <<  "Deleting data at " << data << std::endl;
+                
         if (data != NULL) {
-            //delete[] (char*) data; //converting necessary due to compiler
+            delete[] (char*) data; //converting necessary due to compiler
             data = NULL;
         }
+        
     }
 
     bool PageFileManager::isExisting(uint64_t pageId) {

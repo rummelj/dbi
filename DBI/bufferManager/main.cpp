@@ -3,9 +3,12 @@
 #include <assert.h>
 #include <pthread.h>
 #include <iostream>
+#include <fstream>
 
 #include "BufferManager.hpp"
 #include "BufferFrame.hpp"
+
+#define DBI_DEBUG 1
 
 using namespace dbi;
 
@@ -32,7 +35,13 @@ static void* scan(void *arg) {
 
     while (!stop) {
         unsigned start = random() % (pagesOnDisk - 10);
+        
+        std::clog << "%%%%% start scanning iteration at: " << start << " %%%%%" << std::endl;
+        
         for (unsigned page = start; page < start + 10; page++) {
+            
+            std::clog << "%%%%% scanning page #" << page << " %%%%%" << std::endl;
+            
             BufferFrame& bf = bm->fixPage(page, false);
             unsigned newcount = reinterpret_cast<unsigned*> (bf.getData())[0];
             assert(counters[page] <= newcount);
@@ -50,14 +59,16 @@ static void* readWrite(void *arg) {
 
     uintptr_t count = 0;
     for (unsigned i = 0; i < 100000 / threadCount; i++) {
-        std::clog << "iteration " << i << " thread #" << threadNum << std::endl;
+        std::clog << "====== iteration " << i << " thread #" << threadNum << " ======" << std::endl;
 
         bool isWrite = rand_r(&threadSeed[threadNum]) % 128 < 10;
         BufferFrame& bf = bm->fixPage(randomPage(threadNum), isWrite);
 
         if (isWrite) {
             count++;
+            std::clog << "data before: " << reinterpret_cast<unsigned*> (bf.getData())[0] << std::endl; 
             reinterpret_cast<unsigned*> (bf.getData())[0]++;
+            std::clog << "data after:  " << reinterpret_cast<unsigned*> (bf.getData())[0] << std::endl; 
         }
         bm->unfixPage(bf, isWrite);
     }
@@ -66,6 +77,14 @@ static void* readWrite(void *arg) {
 }
 
 int main(int argc, char** argv) {
+    
+#ifndef DBI_DEBUG
+        ofstream ofs("/dev/null");
+        clog.rdbuf(ofs.rdbuf());
+#endif
+    
+    
+    
     if (argc == 5) {
         pagesOnDisk = atoi(argv[2]);
         pagesInRAM = atoi(argv[3]);
@@ -89,6 +108,7 @@ int main(int argc, char** argv) {
 
     for (unsigned i = 0; i < pagesOnDisk; i++) {
         std::clog << "page #" << i << std::endl;
+        
         BufferFrame& bf = bm->fixPage(i, true);
         reinterpret_cast<unsigned*> (bf.getData())[0] = 0;
         bm->unfixPage(bf, true);
@@ -140,4 +160,10 @@ int main(int argc, char** argv) {
         delete bm;
         return 1;
     }
+    
+#ifndef DBI_DEBUG
+    ofs.flush();
+#endif
+    
+    
 }

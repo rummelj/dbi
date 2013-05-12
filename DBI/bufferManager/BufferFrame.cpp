@@ -14,17 +14,22 @@
 
 namespace dbi {
 
-    BufferFrame::BufferFrame(void* data) {
-        _data = data;
+    BufferFrame::BufferFrame(void* data) : 
+    _pageId(0),
+    _data(data),
+    _exclusive(false),
+    _dirty(false),
+    _fixCount(0) {
+        
         pthread_mutex_init(&_exclusive_mutex, NULL);
 
-        std::cerr << "BufferFrame created for " << data << std::endl;
+        std::clog << "BufferFrame created for " << data << std::endl;
     }
 
     BufferFrame::~BufferFrame() {
         //@todo: Delete data? Cannot delete void*
 
-        std::cerr << "BufferFrame destroyed for " << _data << std::endl;
+        std::clog << "BufferFrame destroyed for " << _data << std::endl;
         pthread_mutex_destroy(&_exclusive_mutex);
         pthread_cond_destroy(&_exclusive_changed);
     }

@@ -43,6 +43,9 @@ namespace dbi {
 
     BufferFrame& BufferManager::fixPage(uint64_t pageId, bool exclusive) {
         if (!isInBuffer(pageId)) {
+            
+            std::clog << pageId << " not in buffer." << std::endl;
+            
             pthread_mutex_lock(&_new_frame);
             if (!isInBuffer(pageId)) {
                 BufferFrame* bf = new BufferFrame(_pageFileManager.readPage(pageId));
@@ -88,7 +91,9 @@ namespace dbi {
         frame._fixCount--;
         frame._dirty = frame._dirty || isDirty;
         if (frame._fixCount == 0 || frame._exclusive) {
+            
             std::clog << "releasing the kraken" << std::endl;
+            
             _twoQ.release(frame._pageId);
             frame._exclusive = false;
             pthread_cond_broadcast(&frame._exclusive_changed);
@@ -107,6 +112,7 @@ namespace dbi {
 
     void BufferManager::saveInBuffer(uint64_t pageId, BufferFrame& bufferFrame) {
         while (_buffer.size() >= _size) {
+            std::clog << "buffersize: " << _buffer.size() << "/size: " << _size << std::endl;
             uint64_t evictable = _twoQ.getEvictable();
 
             //            while ((evictable = ) == 0) {
@@ -134,6 +140,10 @@ namespace dbi {
                 _pageFileManager.writePage(pageId, bf.getData());
             }
 
+            std::clog << "Deleting BufferFrame for Page #" << pageId << std::endl;
+            
+            delete &bf;
+            
             //@todo: Delete bufferframe from heap?
             _twoQ.forget(pageId);
             _buffer.erase(pageId);
