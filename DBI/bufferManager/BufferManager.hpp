@@ -66,7 +66,8 @@ namespace dbi {
     private:
         map<uint64_t, BufferFrame*> _buffer;
         TwoQStrategy _twoQ;
-
+        pthread_mutex_t _new_frame;
+        
         bool isInBuffer(uint64_t pageId);
         BufferFrame& getFromBuffer(uint64_t pageId);
         void saveInBuffer(uint64_t pageId, BufferFrame& bufferFrame);

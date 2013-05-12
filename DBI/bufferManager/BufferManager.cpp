@@ -22,9 +22,12 @@ namespace dbi {
     BufferManager::BufferManager(const std::string& filename, uint64_t size)
     : _pageFileManager(filename) {
         _size = size;
+        pthread_mutex_init(&_new_frame, NULL);
     }
 
     BufferManager::~BufferManager() {
+        pthread_mutex_destroy(&_new_frame);
+
         //Write all dirty pages
         for (map<uint64_t, BufferFrame*>::iterator it = _buffer.begin(); it != _buffer.end(); ++it) {
             uint64_t pageId = it->first;
@@ -39,50 +42,46 @@ namespace dbi {
     }
 
     BufferFrame& BufferManager::fixPage(uint64_t pageId, bool exclusive) {
-        if(pageId == 962) {
-            int i = 0;
-            i++;
-        }
-        std::clog << "fixing " << pageId << " exclusive " << exclusive << std::endl;
-        
-        if (isInBuffer(pageId)) {
-            BufferFrame& bf = getFromBuffer(pageId);
-            pthread_mutex_lock(&bf._exclusive_mutex);
-            if (exclusive) {
-                if (bf._fixCount > 0) {
-                    pthread_cond_wait(&bf._exclusive_changed, &bf._exclusive_mutex);
-                }
-                _twoQ.preserve(pageId);
-                bf._exclusive = true;
-            } else {
-                if (bf._exclusive == true) {
-                    pthread_cond_wait(&bf._exclusive_changed, &bf._exclusive_mutex);
-                }
+        if (!isInBuffer(pageId)) {
+            pthread_mutex_lock(&_new_frame);
+            if (!isInBuffer(pageId)) {
+                BufferFrame* bf = new BufferFrame(_pageFileManager.readPage(pageId));
+                saveInBuffer(pageId, *bf);
             }
-            pthread_mutex_unlock(&bf._exclusive_mutex);
-            bf._fixCount++;
-            bf._pageId = pageId;
-            return bf;
-        } else {
-            BufferFrame* bf = new BufferFrame(_pageFileManager.readPage(pageId));
-            saveInBuffer(pageId, *bf);
-            return fixPage(pageId, exclusive);
+            pthread_mutex_unlock(&_new_frame);
         }
+
+        std::clog << "fixing " << pageId << " exclusive " << exclusive << std::endl;
+
+        BufferFrame& bf = getFromBuffer(pageId);
+        pthread_mutex_lock(&bf._exclusive_mutex);
+        if (exclusive) {
+            while (bf._fixCount > 0) {
+                pthread_cond_wait(&bf._exclusive_changed, &bf._exclusive_mutex);
+            }
+            _twoQ.preserve(pageId);
+            bf._exclusive = true;
+        } else {
+            while (bf._exclusive == true) {
+                pthread_cond_wait(&bf._exclusive_changed, &bf._exclusive_mutex);
+            }
+        }
+        bf._fixCount++;
+        bf._pageId = pageId;
+        pthread_mutex_unlock(&bf._exclusive_mutex);
+        return bf;
     }
 
     void BufferManager::unfixPage(BufferFrame& frame, bool isDirty) {
-        if(frame._pageId == 962) {
-            int i = 0;
-            i++;
-        }
-        
+        pthread_mutex_lock(&frame._exclusive_mutex);
+
         std::clog << "unfixing " << frame._pageId << " dirty " << isDirty << std::endl;
-        
-        if (frame._dirty && !frame._exclusive) {
+
+        if (isDirty && !frame._exclusive) {
             //@todo: Cannot make a frame dirty that was not held exclusively
-            
+
             perror("unfixPage");
-            
+            pthread_mutex_unlock(&frame._exclusive_mutex);
             throw 42;
         }
 
@@ -92,8 +91,10 @@ namespace dbi {
             std::clog << "releasing the kraken" << std::endl;
             _twoQ.release(frame._pageId);
             frame._exclusive = false;
-            pthread_cond_signal(&frame._exclusive_changed);
+            pthread_cond_broadcast(&frame._exclusive_changed);
         }
+
+        pthread_mutex_unlock(&frame._exclusive_mutex);
     }
 
     bool BufferManager::isInBuffer(uint64_t pageId) {
@@ -107,18 +108,18 @@ namespace dbi {
     void BufferManager::saveInBuffer(uint64_t pageId, BufferFrame& bufferFrame) {
         while (_buffer.size() >= _size) {
             uint64_t evictable = _twoQ.getEvictable();
-                    
-//            while ((evictable = ) == 0) {
-//                
-//                
-//                //@todo evict busy waiting
-//                usleep(1000);
-//                
-//                //perror("evictable");
-//                //@todo
-//                //throw 42;
-//            }
-                    
+
+            //            while ((evictable = ) == 0) {
+            //                
+            //                
+            //                //@todo evict busy waiting
+            //                usleep(1000);
+            //                
+            //                //perror("evictable");
+            //                //@todo
+            //                //throw 42;
+            //            }
+
             clearFromBuffer(evictable);
         }
         _twoQ.know(pageId);

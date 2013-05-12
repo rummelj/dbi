@@ -23,6 +23,7 @@ namespace dbi {
         pthread_mutex_destroy(&_preserved_mutex);
         pthread_mutex_destroy(&_fifo_mutex);
         pthread_mutex_destroy(&_lru_mutex);
+        pthread_cond_destroy(&_preserved_changed);
     }
 
     void TwoQStrategy::know(uint64_t id) {
