@@ -3,8 +3,28 @@ dbi
 
 Simple database implementation for university lecture
 
+Installation: dbi
+=================
+
+Change into directory DBI, type `make` and hope.
+
+The binary will be placed in DBI/dist/Debug/GNU-Linux-x86/dbi .
+
+The parameters have to be:
+
+	dbi <file> <pagesOnDisk> <pagesInRAM> <threads>
+
+Dependencies: dbi
+-----------------
+
+dbi needs the following libraries to compile:
+
+ * glog-0.3.3
+
 Installation: sort
 ==================
+
+DEPRECATED!
 
 Change into directory DBI, type `make` and hope.
 
