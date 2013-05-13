@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include <glog/logging.h>
+
 #include "BufferFrame.hpp"
 
 namespace dbi {
@@ -23,13 +25,13 @@ namespace dbi {
         
         pthread_mutex_init(&_exclusive_mutex, NULL);
 
-        std::clog << "BufferFrame created for " << data << std::endl;
+        LOG(INFO) << "BufferFrame created for " << data << std::endl;
     }
 
     BufferFrame::~BufferFrame() {
         //@todo: Delete data? Cannot delete void*
 
-        std::clog << "BufferFrame destroyed for " << _data << std::endl;
+        LOG(INFO) << "BufferFrame destroyed for " << _data << std::endl;
         pthread_mutex_destroy(&_exclusive_mutex);
         pthread_cond_destroy(&_exclusive_changed);
     }

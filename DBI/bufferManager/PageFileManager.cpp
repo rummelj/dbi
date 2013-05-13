@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <iostream>
+#include <glog/logging.h>
 #include <string>
 
 #include "PageFileManager.hpp"
@@ -51,7 +51,7 @@ namespace dbi {
 
     PageFileManager::~PageFileManager() {
         
-        std::clog << "PageFileManager is being deleted" << std::endl;
+        LOG(INFO) << "PageFileManager is being deleted" << std::endl;
 
         
         int status = close(_fd);
@@ -154,7 +154,7 @@ namespace dbi {
             assert(false);
         }
 
-        std::clog << "Writing page " << pageId << " data at " << data << " to file at pos " << offset << std::endl;
+        LOG(INFO) << "Writing page " << pageId << " data at " << data << " to file at pos " << offset << std::endl;
         
         size_t wroteBytes = write(_fd, data, _pageSize);
 
@@ -170,7 +170,7 @@ namespace dbi {
     }
     
     void PageFileManager::closePage(uint64_t pageId, void* data) {
-        std::clog <<  "Deleting data for page #" << pageId <<" at " << data << std::endl;
+        LOG(INFO) <<  "Deleting data for page #" << pageId <<" at " << data << std::endl;
 
         if (data != NULL) {
             delete[] (char*) data; //converting necessary due to compiler

@@ -77,6 +77,9 @@
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbi</output>
+          <linkerLibItems>
+            <linkerLibLibItem>glog</linkerLibLibItem>
+          </linkerLibItems>
         </linkerTool>
       </compileType>
       <item path="bufferManager/BufferFrame.cpp" ex="false" tool="1" flavor2="0">

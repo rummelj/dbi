@@ -6,6 +6,7 @@
  */
 
 #include <pthread.h>
+#include <glog/logging.h>
 
 #include "TwoQStrategy.hpp"
 #include "EnrichedQueue.hpp"
@@ -27,6 +28,9 @@ namespace dbi {
     }
 
     void TwoQStrategy::know(uint64_t id) {
+        
+        LOG(INFO) << "Know page #" << id;
+        
         lockFifo();
         lockPreserved();
         //Put in fifo
@@ -43,6 +47,10 @@ namespace dbi {
     }
 
     void TwoQStrategy::forget(uint64_t id) {
+        
+        LOG(INFO) << "Forget page #" << id;
+
+        
         lockFifo();
         //Remove from fifo
         if (_fifo.contains(id)) {

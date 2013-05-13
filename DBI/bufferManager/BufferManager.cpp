@@ -12,6 +12,8 @@
 #include <unistd.h>
 
 #include <iostream>
+#include <glog/logging.h>
+
 
 #include "BufferManager.hpp"
 
@@ -46,7 +48,7 @@ namespace dbi {
     BufferFrame& BufferManager::fixPage(uint64_t pageId, bool exclusive) {
         if (!isInBuffer(pageId)) {
             
-            std::clog << pageId << " not in buffer." << std::endl;
+            LOG(INFO) << pageId << " not in buffer." << std::endl;
             
             pthread_mutex_lock(&_new_frame);
             if (!isInBuffer(pageId)) {
@@ -56,7 +58,7 @@ namespace dbi {
             pthread_mutex_unlock(&_new_frame);
         }
 
-        std::clog << "fixing " << pageId << " exclusive " << exclusive << std::endl;
+        LOG(INFO) << "fixing " << pageId << " exclusive " << exclusive << std::endl;
 
         BufferFrame& bf = getFromBuffer(pageId);
         pthread_mutex_lock(&bf._exclusive_mutex);
@@ -71,16 +73,21 @@ namespace dbi {
                 pthread_cond_wait(&bf._exclusive_changed, &bf._exclusive_mutex);
             }
         }
+
         bf._fixCount++;
         bf._pageId = pageId;
+
         pthread_mutex_unlock(&bf._exclusive_mutex);
+        
+        LOG(INFO) << "PageId: " << bf._pageId << " Fixcount: " << bf._fixCount;
+        
         return bf;
     }
 
     void BufferManager::unfixPage(BufferFrame& frame, bool isDirty) {
         pthread_mutex_lock(&frame._exclusive_mutex);
 
-        std::clog << "unfixing " << frame._pageId << " dirty " << isDirty << std::endl;
+        LOG(INFO) << "unfixing " << frame._pageId << " dirty " << isDirty << std::endl;
 
         if (isDirty && !frame._exclusive) {
             //@todo: Cannot make a frame dirty that was not held exclusively
@@ -92,9 +99,10 @@ namespace dbi {
 
         frame._fixCount--;
         frame._dirty = frame._dirty || isDirty;
+        
+        
+        
         if (frame._fixCount == 0 || frame._exclusive) {
-            
-            std::clog << "releasing the kraken" << std::endl;
             
             _twoQ.release(frame._pageId);
             frame._exclusive = false;
@@ -113,20 +121,12 @@ namespace dbi {
     }
 
     void BufferManager::saveInBuffer(uint64_t pageId, BufferFrame& bufferFrame) {
+        LOG(INFO) << "buffersize: " << _buffer.size() << "/" << _size << std::endl;
         while (_buffer.size() >= _size) {
-            std::clog << "buffersize: " << _buffer.size() << "/size: " << _size << std::endl;
+            
             uint64_t evictable = _twoQ.getEvictable();
-
-            //            while ((evictable = ) == 0) {
-            //                
-            //                
-            //                //@todo evict busy waiting
-            //                usleep(1000);
-            //                
-            //                //perror("evictable");
-            //                //@todo
-            //                //throw 42;
-            //            }
+            
+            LOG(INFO) << "evicting page #" << evictable;
 
             clearFromBuffer(evictable);
         }
@@ -144,13 +144,14 @@ namespace dbi {
                 _pageFileManager.closePage(pageId, bf.getData());
             }
 
-            std::clog << "Deleting BufferFrame for Page #" << pageId << std::endl;
+            LOG(INFO) << "Deleting BufferFrame for Page #" << pageId << std::endl;
             
-            delete &bf;
             
             //@todo: Delete bufferframe from heap?
             _twoQ.forget(pageId);
             _buffer.erase(pageId);
+
+            //delete &bf;
         }
     }
 }
