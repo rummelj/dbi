@@ -12,6 +12,7 @@
 
 #include "BufferManager.hpp"
 #include "BufferFrame.hpp"
+#include "FifoStrategy.hpp"
 
 class NullStrategy {
     
@@ -94,12 +95,14 @@ using namespace dbi;
 int main(int argc, char** argv) {
     google::InitGoogleLogging(argv[0]);
 
-    BufferManager<NullStrategy> manager("lorem.db", 2);
+    BufferManager<FifoStrategy> manager("lorem.db", 32);
     
-    for(unsigned int i = 0; i < 3; i++) {
-        BufferFrame& frame = manager.fixPage(i, false);
-        std::cout << reinterpret_cast<char*>(frame.getData())[0] << std::endl;
-        manager.unfixPage(frame, false);
+    for(unsigned int i = 0; i < 256; i++) {
+        BufferFrame& frame = manager.fixPage(i, true);
+        std::cout << reinterpret_cast<char*>(frame.getData())[0];
+        std::cout << reinterpret_cast<char*>(frame.getData())[1] << std::endl;
+        reinterpret_cast<char*>(frame.getData())[1] = (char)((i%10) + 0x30);
+        manager.unfixPage(frame, true);
     }
     
     return EXIT_SUCCESS;

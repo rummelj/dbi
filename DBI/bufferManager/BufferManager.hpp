@@ -164,6 +164,8 @@ namespace dbi {
             frame.lock( BufferFrame::LockIntend::Intend_Shared );
         }
         
+        _repressionStrategy.preserve(pageId);
+        
         return frame;
         
         //unlock dictionary
@@ -190,7 +192,7 @@ namespace dbi {
 
     template<class RepressionStrategy, class FileManager>
     bool BufferManager<RepressionStrategy, FileManager>::isInDictionary(uint64_t pageId) {
-        return _dictionary.count(pageId) > 0;
+        return _dictionary.find(pageId) != _dictionary.end();
     }
 
     template<class RepressionStrategy, class FileManager>

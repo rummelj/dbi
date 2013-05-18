@@ -31,19 +31,14 @@ namespace dbi {
     }
     
     BufferFrame::BufferFrame( const BufferFrame& copy ) {
-        
         LOG(FATAL) << "Don't copy BufferFrames.";
-                
         assert(false);
         
     }
     
     BufferFrame& BufferFrame::operator= (BufferFrame const& copy) {
-        
         LOG(FATAL) << "Don't copy BufferFrames.";
-                
         assert(false);
-        
         return *this;
     }
 
@@ -60,27 +55,55 @@ namespace dbi {
     
     uint64_t BufferFrame::lock(LockIntend lockIntend) {
         
-        //lock LockStateMutex
-        
-        //lock Frame
         LOG(INFO) << "Locking Page #" << _pageId << ", intend: " << lockIntend;
         
-        //unlock LockStateMutex
+        switch(lockIntend) {
+            case LockIntend::Intend_Exclusive:
+                LOG_IF(FATAL, _lockState != LockState::State_None) << "Exclusive lock compatible with no lock.";
+                
+                _lockState = LockState::State_Exclusive;
+                _fixCount = 1;
+                
+                break;
+            case LockIntend::Intend_Shared:
+                LOG_IF(FATAL, _lockState == LockState::State_Exclusive) << "Exclusive lock compatible with no lock.";
+                
+                _lockState = LockState::State_Shared;
+                _fixCount ++;
+                
+                break;
+        }
         
-        
-        return 0;
+        return _fixCount;
     }
 
     uint64_t BufferFrame::removeLock(bool isDirty) {
+        LOG(INFO) << "Removing Lock Page " << _pageId << ", dirty: " << (isDirty ? "t" : "f");
                
         if( isDirty && _lockState != LockState::State_Exclusive ) {
             LOG(FATAL) << "Cannot make a frame dirty that was not held exclusively.";
             assert(false);
         }
         
-        LOG(INFO) << "Removing Lock Page " << _pageId << ", dirty: " << (isDirty ? "t" : "f");
+        switch(_lockState) {
+            case LockState::State_Exclusive: {
+                _dirty = isDirty;
+                _fixCount = 0;
+            } break;
+            case LockState::State_Shared: {
+                _fixCount--;
+            } break;
+            default: {
+                LOG(FATAL) << "Trying to remove notexistant lock.";
+                assert(false);
+            } break;
+        }
         
-        return 0;
+        if(_fixCount == 0) {
+                _lockState = LockState::State_None;
+        }
+        
+        return _fixCount;
     }
     
     uint64_t BufferFrame::getPageId() {

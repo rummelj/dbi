@@ -74,6 +74,9 @@ namespace dbi {
         }
 
         const off_t offset = pageId * _pageSize;
+        
+        LOG(INFO) << "Reading Page #" << pageId << " at offset " << offset;
+        
         char* buffer = new char[_pageSize];
 
         if (lseek(_fd, offset, SEEK_SET) < 0) {

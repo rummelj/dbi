@@ -33,6 +33,7 @@
         <itemPath>bufferManager/BufferFrame.cpp</itemPath>
         <itemPath>bufferManager/BufferManager.cpp</itemPath>
         <itemPath>bufferManager/DBIException.cpp</itemPath>
+        <itemPath>bufferManager/FifoStrategy.cpp</itemPath>
         <itemPath>bufferManager/PageFileManager.cpp</itemPath>
         <itemPath>bufferManager/TwoQStrategy.cpp</itemPath>
         <itemPath>bufferManager/main.cpp</itemPath>
@@ -97,6 +98,8 @@
       <item path="bufferManager/DBIException.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="bufferManager/EnrichedQueue.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bufferManager/FifoStrategy.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bufferManager/FifoStrategy.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -165,6 +168,8 @@
       <item path="bufferManager/DBIException.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="bufferManager/EnrichedQueue.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bufferManager/FifoStrategy.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bufferManager/FifoStrategy.hpp" ex="false" tool="3" flavor2="0">
       </item>

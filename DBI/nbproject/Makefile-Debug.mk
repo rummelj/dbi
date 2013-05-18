@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/BufferFrame.o \
 	${OBJECTDIR}/bufferManager/BufferManager.o \
 	${OBJECTDIR}/bufferManager/DBIException.o \
+	${OBJECTDIR}/bufferManager/FifoStrategy.o \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
 	${OBJECTDIR}/bufferManager/TwoQStrategy.o \
 	${OBJECTDIR}/bufferManager/main_alex.o \
@@ -85,6 +86,11 @@ ${OBJECTDIR}/bufferManager/DBIException.o: bufferManager/DBIException.cpp
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/DBIException.o bufferManager/DBIException.cpp
+
+${OBJECTDIR}/bufferManager/FifoStrategy.o: bufferManager/FifoStrategy.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/FifoStrategy.o bufferManager/FifoStrategy.cpp
 
 ${OBJECTDIR}/bufferManager/PageFileManager.o: bufferManager/PageFileManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
