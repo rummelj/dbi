@@ -41,6 +41,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
 	${OBJECTDIR}/bufferManager/TwoQStrategy.o \
 	${OBJECTDIR}/bufferManager/main.o \
+	${OBJECTDIR}/bufferManager/main_alex.o \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
@@ -101,6 +102,11 @@ ${OBJECTDIR}/bufferManager/main.o: bufferManager/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/main.o bufferManager/main.cpp
+
+${OBJECTDIR}/bufferManager/main_alex.o: bufferManager/main_alex.cpp 
+	${MKDIR} -p ${OBJECTDIR}/bufferManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/main_alex.o bufferManager/main_alex.cpp
 
 ${OBJECTDIR}/extSort/ExternalSorter.o: extSort/ExternalSorter.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort

@@ -166,7 +166,6 @@ namespace dbi {
             assert(false);
         }
 
-        closePage( pageId, data );
     }
     
     void PageFileManager::closePage(uint64_t pageId, void* data) {
