@@ -12,6 +12,7 @@
         <itemPath>bufferManager/FifoStrategy.hpp</itemPath>
         <itemPath>bufferManager/PageFileManager.hpp</itemPath>
         <itemPath>bufferManager/TwoQStrategy.hpp</itemPath>
+        <itemPath>bufferManager/mutex_lock.hpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="extSort" projectFiles="true">
         <itemPath>extSort/ExternalSorter.hpp</itemPath>
@@ -89,8 +90,6 @@
       </item>
       <item path="bufferManager/BufferFrame.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="bufferManager/BufferManager.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="bufferManager/BufferManager.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="bufferManager/DBIException.cpp" ex="false" tool="1" flavor2="0">
@@ -111,7 +110,9 @@
       </item>
       <item path="bufferManager/TwoQStrategy.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="bufferManager/main_alex.cpp" ex="false" tool="1" flavor2="0">
+      <item path="bufferManager/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bufferManager/mutex_lock.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="extSort/ExternalSorter.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -184,6 +185,8 @@
       <item path="bufferManager/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bufferManager/main_alex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bufferManager/mutex_lock.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="extSort/ExternalSorter.cpp" ex="false" tool="1" flavor2="0">
       </item>

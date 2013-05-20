@@ -36,12 +36,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/BufferFrame.o \
-	${OBJECTDIR}/bufferManager/BufferManager.o \
 	${OBJECTDIR}/bufferManager/DBIException.o \
 	${OBJECTDIR}/bufferManager/FifoStrategy.o \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
 	${OBJECTDIR}/bufferManager/TwoQStrategy.o \
-	${OBJECTDIR}/bufferManager/main_alex.o \
+	${OBJECTDIR}/bufferManager/main.o \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
@@ -77,11 +76,6 @@ ${OBJECTDIR}/bufferManager/BufferFrame.o: bufferManager/BufferFrame.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferFrame.o bufferManager/BufferFrame.cpp
 
-${OBJECTDIR}/bufferManager/BufferManager.o: bufferManager/BufferManager.cpp 
-	${MKDIR} -p ${OBJECTDIR}/bufferManager
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferManager.o bufferManager/BufferManager.cpp
-
 ${OBJECTDIR}/bufferManager/DBIException.o: bufferManager/DBIException.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
@@ -102,10 +96,10 @@ ${OBJECTDIR}/bufferManager/TwoQStrategy.o: bufferManager/TwoQStrategy.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/TwoQStrategy.o bufferManager/TwoQStrategy.cpp
 
-${OBJECTDIR}/bufferManager/main_alex.o: bufferManager/main_alex.cpp 
+${OBJECTDIR}/bufferManager/main.o: bufferManager/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/main_alex.o bufferManager/main_alex.cpp
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/main.o bufferManager/main.cpp
 
 ${OBJECTDIR}/extSort/ExternalSorter.o: extSort/ExternalSorter.cpp 
 	${MKDIR} -p ${OBJECTDIR}/extSort

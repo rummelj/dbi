@@ -9,12 +9,13 @@
 
 #include "BufferManager.hpp"
 #include "BufferFrame.hpp"
+#include "FifoStrategy.hpp"
 
 #define DBI_DEBUG
 
 using namespace dbi;
 
-BufferManager* bm;
+BufferManager<FifoStrategy>* bm;
 unsigned pagesOnDisk;
 unsigned pagesInRAM;
 unsigned threadCount;
@@ -104,7 +105,7 @@ int main(int argc, char** argv) {
     for (unsigned i = 0; i < threadCount; i++)
         threadSeed[i] = i * 97134;
 
-    bm = new dbi::BufferManager(argv[1], pagesInRAM);
+    bm = new dbi::BufferManager<FifoStrategy>(argv[1], pagesInRAM);
 
     pthread_t threads[threadCount];
     pthread_attr_t pattr;
@@ -149,7 +150,7 @@ int main(int argc, char** argv) {
 
     LOG(INFO) << "// restart buffer manager" << std::endl;
     delete bm;
-    bm = new dbi::BufferManager(argv[1], pagesInRAM);
+    bm = new dbi::BufferManager<FifoStrategy>(argv[1], pagesInRAM);
 
     LOG(INFO) << "// check counter" << std::endl;
     unsigned totalCountOnDisk = 0;

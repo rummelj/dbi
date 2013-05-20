@@ -44,7 +44,7 @@ namespace dbi {
         void* getData();
         
         uint64_t lock(LockIntend lockIntend);
-        uint64_t removeLock(bool isDirty);
+        uint64_t release(bool isDirty);
         
         bool isLocked();
         bool isDirty();
@@ -60,8 +60,10 @@ namespace dbi {
         LockState _lockState;
         uint64_t _fixCount;
         
-        pthread_mutex_t _exclusive_mutex;
-        pthread_cond_t _exclusive_changed = PTHREAD_COND_INITIALIZER;
+        pthread_rwlock_t _rwlock;
+        
+        pthread_mutex_t _metadata_mutex;
+        
     };
 }
 

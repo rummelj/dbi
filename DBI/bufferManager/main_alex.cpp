@@ -14,80 +14,46 @@
 #include "BufferFrame.hpp"
 #include "FifoStrategy.hpp"
 
-class NullStrategy {
-    
-public:
-    
-        NullStrategy() {
-            LOG(INFO) << "Strategy created.";
-        }
+#include <pthread.h>
 
-        virtual ~NullStrategy() {
-            LOG(INFO) << "Strategy destructed.";
-        }
-
-        /**
-         * The given id is under eviction management after calling this method.
-         * @param id
-         */
-        void know(uint64_t id) {
-            LOG(INFO) << "know " << id;
-        }
-
-        /**
-         * The given id is not under eviction management anymore after calling this method.
-         * @param id
-         */
-        void forget(uint64_t id) {
-            LOG(INFO) << "forget " << id;
-        }
-
-        /**
-         * Indicates that a given id was used.
-         * @param id
-         */
-        void used(uint64_t id) {
-            LOG(INFO) << "used " << id;
-        }
-
-        /**
-         * The known id given is not a candidate for eviction anymore.
-         * @param id
-         */
-        void preserve(uint64_t id) {
-            LOG(INFO) << "preserve " << id;
-        }
-
-        /**
-         * The known id again is a candidate for eviction now.
-         * @param id
-         */
-        void release(uint64_t id) {
-            LOG(INFO) << "release " << id;
-        }
-
-        /**
-         * Returns the next id that should be evicted but does not forget it.
-         * @return 
-         * 0 if nothing is evictable.
-         * 
-         */
-        uint64_t getEvictable() {
-            LOG(INFO) << "evictable";
-            return 0;
-        }
-
-        /**
-         * @return 
-         * number of known elements
-         */
-        unsigned int size() {
-            return 0;
-        }
-    
-};
 
 using namespace dbi;
+
+void* reader_thread(void* pars) {
+    
+    static const uint64_t multiplyer = 256;
+    
+    BufferManager<FifoStrategy>* bm = reinterpret_cast<BufferManager<FifoStrategy>*>(pars);
+    
+    for(unsigned int i = 0; i < 256 * multiplyer; i++) {
+        unsigned int pageId = i % 256;
+        
+        BufferFrame& frame = bm->fixPage(pageId, false);
+        std::cout << reinterpret_cast<char*>(frame.getData())[0] << std::endl;
+        bm->unfixPage(frame, false);
+    }
+    
+    
+    return NULL;
+}
+
+void* writer_thread(void* pars) {
+    
+    static const uint64_t multiplyer = 256;
+    
+    BufferManager<FifoStrategy>* bm = reinterpret_cast<BufferManager<FifoStrategy>*>(pars);
+    
+    for(unsigned int i = 0; i < 256 * multiplyer; i++) {
+        unsigned int pageId = i % 256;
+        
+        BufferFrame& frame = bm->fixPage(pageId, true);
+        reinterpret_cast<char*>(frame.getData())[0] = (char)((pageId%10) + 0x30);
+        bm->unfixPage(frame, true);
+    }
+    
+    
+    return NULL;
+}
 
 /*
  * 
@@ -96,14 +62,16 @@ int main(int argc, char** argv) {
     google::InitGoogleLogging(argv[0]);
 
     BufferManager<FifoStrategy> manager("lorem.db", 32);
+
     
-    for(unsigned int i = 0; i < 256; i++) {
-        BufferFrame& frame = manager.fixPage(i, true);
-        std::cout << reinterpret_cast<char*>(frame.getData())[0];
-        std::cout << reinterpret_cast<char*>(frame.getData())[1] << std::endl;
-        reinterpret_cast<char*>(frame.getData())[1] = (char)((i%10) + 0x30);
-        manager.unfixPage(frame, true);
-    }
+    pthread_t read_pthread;
+    pthread_create( &read_pthread, NULL, &reader_thread, &manager );
+
+    pthread_t write_pthread;
+    pthread_create( &write_pthread, NULL, &writer_thread, &manager );
+    
+    pthread_join(read_pthread, NULL);
+    pthread_join(write_pthread, NULL);
     
     return EXIT_SUCCESS;
 }
