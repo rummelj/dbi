@@ -21,12 +21,13 @@
 #include "BufferFrame.hpp"
 #include "PageFileManager.hpp"
 #include "TwoQStrategy.hpp"
+#include "FifoStrategy.hpp"
 
 using namespace std;
 
 namespace dbi {
 
-    template<class RepressionStrategy, class FileManager = PageFileManager>
+    template<class RepressionStrategy = FifoStrategy, class FileManager = PageFileManager>
     class BufferManager {
         
     public:

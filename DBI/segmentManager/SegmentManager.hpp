@@ -8,28 +8,43 @@
 #ifndef SEGMENTMANAGER_HPP
 #define	SEGMENTMANAGER_HPP
 
-class FifoStrategy;
-class PageFileManager;
+#include <cstdint>
 
-template class BufferManager<FifoStrategy, PageFileManager>;
+namespace dbi {
+
+    class FifoStrategy;
+    class PageFileManager;
+    class BufferManager;
+    class SegmentInventory;
+
+    class SegmentManager {
+        static const uint64_t SEGMENT_INVENTORY_PAGEID = 0;
+        
+        
+
+
+    public:
+        SegmentManager(BufferManager& bufferManager);
+        virtual ~SegmentManager();
+
+
+        /**
+         * Initializes the segmentmanager for it's first use.
+         * That is:
+         *  - initializing the segment inventory
+         *  - initializing the free space inventory
+         */
+        void initForFirstUse();
+
+    private:
+
+        BufferManager& _bufferManager;
 
 
 
-class SegmentManager {
-    
-    typedef BufferManager<FifoStrategy, PageFileManager> BufferManager_t;
-    
-public:
-    SegmentManager(BufferManager_t& bufferManager);
-    SegmentManager(const SegmentManager& orig);
-    virtual ~SegmentManager();
-private:
-    
-    BufferManager_t& _bufferManager;
-    
-    
+    };
 
-};
+}
 
 #endif	/* SEGMENTMANAGER_HPP */
 

@@ -36,7 +36,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/bufferManager/BufferFrame.o \
-	${OBJECTDIR}/bufferManager/BufferManager.o \
 	${OBJECTDIR}/bufferManager/DBIException.o \
 	${OBJECTDIR}/bufferManager/FifoStrategy.o \
 	${OBJECTDIR}/bufferManager/PageFileManager.o \
@@ -45,7 +44,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/extSort/ExternalSorter.o \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
-	${OBJECTDIR}/extSort/file_descriptor.o
+	${OBJECTDIR}/extSort/file_descriptor.o \
+	${OBJECTDIR}/segmentManager/Segment.o \
+	${OBJECTDIR}/segmentManager/SegmentManager.o
 
 
 # C Compiler Flags
@@ -76,11 +77,6 @@ ${OBJECTDIR}/bufferManager/BufferFrame.o: bufferManager/BufferFrame.cpp
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferFrame.o bufferManager/BufferFrame.cpp
-
-${OBJECTDIR}/bufferManager/BufferManager.o: bufferManager/BufferManager.cpp 
-	${MKDIR} -p ${OBJECTDIR}/bufferManager
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/bufferManager/BufferManager.o bufferManager/BufferManager.cpp
 
 ${OBJECTDIR}/bufferManager/DBIException.o: bufferManager/DBIException.cpp 
 	${MKDIR} -p ${OBJECTDIR}/bufferManager
@@ -126,6 +122,16 @@ ${OBJECTDIR}/extSort/file_descriptor.o: extSort/file_descriptor.cpp
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/file_descriptor.o extSort/file_descriptor.cpp
+
+${OBJECTDIR}/segmentManager/Segment.o: segmentManager/Segment.cpp 
+	${MKDIR} -p ${OBJECTDIR}/segmentManager
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/segmentManager/Segment.o segmentManager/Segment.cpp
+
+${OBJECTDIR}/segmentManager/SegmentManager.o: segmentManager/SegmentManager.cpp 
+	${MKDIR} -p ${OBJECTDIR}/segmentManager
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -std=c++11 -lpthread -MMD -MP -MF $@.d -o ${OBJECTDIR}/segmentManager/SegmentManager.o segmentManager/SegmentManager.cpp
 
 # Subprojects
 .build-subprojects:

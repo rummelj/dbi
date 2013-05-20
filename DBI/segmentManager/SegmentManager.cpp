@@ -7,12 +7,18 @@
 
 #include "SegmentManager.hpp"
 
-SegmentManager::SegmentManager() {
-}
+namespace dbi {
 
-SegmentManager::SegmentManager(const SegmentManager& orig) {
-}
+    SegmentManager::SegmentManager(BufferManager& bufferManager) : _bufferManager(bufferManager) {
+    }
 
-SegmentManager::~SegmentManager() {
-}
+    SegmentManager::~SegmentManager() {
+    }
 
+    SegmentManager::initForFirstUse() {
+        
+        
+        
+    }
+    
+}

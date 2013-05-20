@@ -47,7 +47,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/extSort/RunDescriptor.o \
 	${OBJECTDIR}/extSort/SortQueue.o \
 	${OBJECTDIR}/extSort/file_descriptor.o \
-	${OBJECTDIR}/extSort/main.o
+	${OBJECTDIR}/extSort/main.o \
+	${OBJECTDIR}/segmentManager/Segment.o \
+	${OBJECTDIR}/segmentManager/SegmentManager.o
 
 
 # C Compiler Flags
@@ -138,6 +140,16 @@ ${OBJECTDIR}/extSort/main.o: extSort/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/extSort
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/extSort/main.o extSort/main.cpp
+
+${OBJECTDIR}/segmentManager/Segment.o: segmentManager/Segment.cpp 
+	${MKDIR} -p ${OBJECTDIR}/segmentManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/segmentManager/Segment.o segmentManager/Segment.cpp
+
+${OBJECTDIR}/segmentManager/SegmentManager.o: segmentManager/SegmentManager.cpp 
+	${MKDIR} -p ${OBJECTDIR}/segmentManager
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/segmentManager/SegmentManager.o segmentManager/SegmentManager.cpp
 
 # Subprojects
 .build-subprojects:
