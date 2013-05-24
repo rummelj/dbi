@@ -9,27 +9,16 @@
 
 namespace dbi {
 
-    Segment::Segment(uint64_t segmentId, uint64_t minPage, uint64_t maxPage, ProtectionType protectionType, PersistencyType persistencyType)
-    : _segmentId(segmentId)
-    , _pageRange(minPage, maxPage)
-    , _protectionType(protectionType)
-    , _persistencyType(persistencyType) {
+    Segment::Segment(SegmentManager& segmentManager, uint64_t segmentId, ProtectionType protectionType, PersistencyType persistencyType)
+    : _segmentManager(segmentManager)
+    , _info( segmentId, 0, protectionType, persistencyType ) {
 
     }
 
     Segment::~Segment() {
     }
 
-    SegmentInventory::SegmentInventory() 
-    : Segment(0, 0, 0,  ProtectionType::PROT_PRIVATE, PersistencyType::PERS_PREMANENT ) {
 
-
-
-    }
-    
-    SegmentInventory::~SegmentInventory() {
-        
-    }
 
 }
 

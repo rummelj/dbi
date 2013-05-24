@@ -10,11 +10,15 @@
 
 #include <cstdint>
 
+#include "SegmentInventory.hpp"
+#include "FreeSpaceInventory.hpp"
+
 namespace dbi {
 
     class FifoStrategy;
     class PageFileManager;
     class BufferManager;
+    class BufferFrame;
     class SegmentInventory;
 
     class SegmentManager {
@@ -35,10 +39,18 @@ namespace dbi {
          *  - initializing the free space inventory
          */
         void initForFirstUse();
+        
+        BufferFrame& fixPage( uint64_t pageId, bool exclusive );
+        void unfixPage( BufferFrame& frame, bool isDirty );
+        
+        PageRange allocate(uint64_t min, uint64_t max);
 
     private:
 
         BufferManager& _bufferManager;
+        
+        SegmentInventory* _segmentInventory;
+        FreeSpaceInventory* _freeSpaceInventory;
 
 
 
